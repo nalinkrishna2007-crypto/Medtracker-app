@@ -1,1 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192"><rect width="192" height="192" rx="42" fill="#1769e0"/><path fill="#fff" d="M80 34h32v46h46v32h-46v46H80v-46H34V80h46z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="20" y1="12" x2="172" y2="184" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2584F5"/>
+      <stop offset="1" stop-color="#1054C8"/>
+    </linearGradient>
+    <linearGradient id="shield" x1="59" y1="35" x2="139" y2="153" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#EAF3FF"/>
+    </linearGradient>
+    <filter id="shadow" x="31" y="23" width="130" height="153" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="5"/>
+      <feGaussianBlur stdDeviation="5"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix values="0 0 0 0 0.02 0 0 0 0 0.16 0 0 0 0 0.43 0 0 0 0.22 0"/>
+      <feBlend in2="BackgroundImageFix" result="effect1_dropShadow"/>
+      <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+  </defs>
+  <rect width="192" height="192" rx="44" fill="url(#bg)"/>
+  <path d="M18 47C18 31 31 18 47 18h98c16 0 29 13 29 29v98c0 16-13 29-29 29H47c-16 0-29-13-29-29V47Z" fill="white" fill-opacity=".08"/>
+  <g filter="url(#shadow)">
+    <path d="M96 35 140 52v35c0 30-18.7 56.3-44 66-25.3-9.7-44-36-44-66V52l44-17Z" fill="url(#shield)"/>
+    <path d="M96 46 129 59v28c0 22.2-13.2 42-33 50.8C76.2 129 63 109.2 63 87V59l33-13Z" fill="#E5F0FF"/>
+    <rect x="85" y="65" width="22" height="66" rx="5" fill="#1769E0"/>
+    <rect x="63" y="87" width="66" height="22" rx="5" fill="#1769E0"/>
+    <circle cx="137" cy="137" r="19" fill="#16B892" stroke="white" stroke-width="5"/>
+    <path d="m128 137 6 6 12-13" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
