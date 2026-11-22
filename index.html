@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1769e0">
+  <meta name="description" content="Private, offline-friendly medicine expiry and health record tracker.">
+  <title>MedTracker — your health, organized</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.svg">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#dashboard" aria-label="MedTracker dashboard"><span class="brand-mark">✚</span><span>Med<span class="brand-light">Tracker</span></span></a>
+    <div class="topbar-right"><span class="privacy-pill"><span class="privacy-dot"></span> Stored on this device</span><button id="installBtn" class="button button-light hidden" type="button">Install app</button></div>
+  </header>
+  <div class="app-layout">
+    <aside class="sidebar" aria-label="Main navigation">
+      <p class="nav-label">WORKSPACE</p>
+      <nav class="navigation">
+        <button class="nav-link active" data-view="dashboard"><span>▦</span> Dashboard</button>
+        <button class="nav-link" data-view="medicines"><span>＋</span> Medicines <span class="nav-count" id="medicineNavCount">0</span></button>
+        <button class="nav-link" data-view="records"><span>♡</span> Health records</button>
+        <button class="nav-link" data-view="compare"><span>⌁</span> Comparison</button>
+        <button class="nav-link" data-view="disposal"><span>♻</span> Safe disposal</button>
+      </nav>
+      <div class="sidebar-note"><span class="note-icon">🔒</span><div><strong>Your data stays private</strong><p>Saved locally in this browser. No account or cloud service.</p></div></div>
+    </aside>
+    <main class="main-content">
+      <section class="view active" id="view-dashboard">
+        <div class="page-heading"><div><p class="eyebrow" id="todayLabel">YOUR HEALTH OVERVIEW</p><h1>Good health starts here</h1><p class="subheading">A clear view of your medicines and recent health activity.</p></div><button class="button button-primary" data-go="medicines">＋ Add medicine</button></div>
+        <div id="alertArea" class="alert-area" aria-live="polite"></div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-icon blue">✚</div><div><p>Total medicines</p><strong id="totalMedicines">0</strong><span>In your medicine list</span></div></article>
+          <article class="stat-card"><div class="stat-icon amber">◷</div><div><p>Expiring soon</p><strong id="soonMedicines">0</strong><span>Within the next 30 days</span></div></article>
+          <article class="stat-card"><div class="stat-icon red">!</div><div><p>Expired</p><strong id="expiredMedicines">0</strong><span>Review and dispose safely</span></div></article>
+          <article class="stat-card"><div class="stat-icon green">♡</div><div><p>Health records</p><strong id="totalRecords">0</strong><span>Measurements recorded</span></div></article>
+        </div>
+        <div class="dashboard-grid">
+          <section class="panel"><div class="panel-heading"><div><h2>Medicine expiry</h2><p>Items that may need your attention</p></div><button class="text-button" data-go="medicines">View all →</button></div><div id="expiryPreview" class="list-stack"></div></section>
+          <section class="panel"><div class="panel-heading"><div><h2>Recent health records</h2><p>Your latest measurements</p></div><button class="text-button" data-go="records">View all →</button></div><div id="recentRecords" class="list-stack"></div></section>
+        </div>
+        <p class="medical-note">MedTracker helps organize personal information; it does not provide medical advice. Confirm medicine use, expiry, and disposal with a pharmacist or healthcare professional.</p>
+      </section>
+
+      <section class="view" id="view-medicines">
+        <div class="page-heading"><div><p class="eyebrow">MEDICINE CABINET</p><h1>Medicines</h1><p class="subheading">Keep track of what you have and when it expires.</p></div><button class="button button-primary" id="showMedicineForm">＋ Add medicine</button></div>
+        <section class="panel form-panel hidden" id="medicineFormPanel"><div class="panel-heading"><div><h2 id="medicineFormTitle">Add a medicine</h2><p>Fields marked * are required.</p></div><button class="icon-button" type="button" data-close="medicineFormPanel" aria-label="Close form">×</button></div>
+          <form id="medicineForm" class="form-grid"><input type="hidden" id="medicineId"><label class="field field-wide">Medicine name *<input id="medicineName" required maxlength="100" placeholder="e.g. Vitamin D"></label><label class="field">Manufacturing date<input id="manufactureDate" type="date"></label><label class="field">Expiry date *<input id="expiryDate" type="date" required></label><label class="field">Quantity<input id="medicineQuantity" maxlength="50" placeholder="e.g. 20 tablets"></label><label class="field">Dosage<input id="medicineDosage" maxlength="100" placeholder="e.g. 1 tablet daily"></label><div class="form-actions field-wide"><button class="button button-primary" type="submit">Save medicine</button><button class="button button-light" type="button" data-close="medicineFormPanel">Cancel</button></div></form>
+        </section>
+        <section class="panel"><div class="panel-heading"><div><h2>Your medicines</h2><p id="medicineListSubtitle">0 medicines</p></div><input class="search-input" id="medicineSearch" type="search" placeholder="Search medicines" aria-label="Search medicines"></div><div id="medicineList" class="medicine-grid"></div></section>
+      </section>
+
+      <section class="view" id="view-records">
+        <div class="page-heading"><div><p class="eyebrow">PERSONAL HEALTH LOG</p><h1>Health records</h1><p class="subheading">Record checkups and measurements over time.</p></div><button class="button button-primary" id="showRecordForm">＋ Add record</button></div>
+        <section class="panel form-panel hidden" id="recordFormPanel"><div class="panel-heading"><div><h2 id="recordFormTitle">Add a health record</h2><p>Enter only the measurements you want to track.</p></div><button class="icon-button" type="button" data-close="recordFormPanel" aria-label="Close form">×</button></div>
+          <form id="recordForm" class="form-grid"><input type="hidden" id="recordId"><label class="field">Record date *<input id="recordDate" type="date" required></label><label class="field">Record type<input id="recordType" maxlength="100" placeholder="e.g. Monthly checkup"></label><label class="field">Weight<input id="recordWeight" type="number" min="0" max="1000" step="0.1" placeholder="kg"></label><label class="field">Blood pressure<input id="recordBP" maxlength="30" placeholder="e.g. 120/80 mmHg"></label><label class="field">Blood sugar<input id="recordSugar" type="number" min="0" max="2000" step="0.1" placeholder="e.g. 95 mg/dL"></label><label class="field">Other measurement<input id="recordOther" maxlength="150" placeholder="e.g. Resting heart rate: 72 bpm"></label><label class="field field-wide">Notes<textarea id="recordNotes" rows="3" maxlength="1000" placeholder="Optional notes for your records"></textarea></label><div class="form-actions field-wide"><button class="button button-primary" type="submit">Save record</button><button class="button button-light" type="button" data-close="recordFormPanel">Cancel</button></div></form>
+        </section>
+        <section class="panel"><div class="panel-heading"><div><h2>All records</h2><p>Measurements are stored on this device.</p></div></div><div id="recordList" class="list-stack"></div></section>
+      </section>
+
+      <section class="view" id="view-compare">
+        <div class="page-heading"><div><p class="eyebrow">HEALTH TRENDS</p><h1>Health comparison</h1><p class="subheading">Compare your earliest and latest recorded measurements.</p></div><button class="button button-light" data-go="records">＋ Add record</button></div>
+        <div id="comparisonSummary" class="comparison-grid"></div>
+        <section class="panel"><div class="panel-heading"><div><h2>Weight over time</h2><p>Recorded values shown in kg</p></div></div><div id="weightChart" class="chart-wrap"></div></section>
+        <p class="medical-note">Changes are descriptive only and may not indicate improvement or a health outcome. Discuss results with a qualified healthcare professional.</p>
+      </section>
+
+      <section class="view" id="view-disposal">
+        <div class="page-heading"><div><p class="eyebrow">LOOK AFTER YOUR COMMUNITY</p><h1>Safe medicine disposal</h1><p class="subheading">Expired medicines should not be used. Follow local disposal advice.</p></div><button class="button button-primary" data-go="medicines">Review medicines</button></div>
+        <section class="panel disposal-highlight"><div class="disposal-icon">♻</div><div><p class="eyebrow">NEEDS REVIEW</p><h2 id="disposalExpiredCount">No expired medicines listed</h2><p id="disposalExpiredList">Add medicines with expiry dates to see items that need review.</p></div></section>
+        <div class="disposal-grid"><article class="panel guidance-card"><span class="guidance-number">01</span><h2>Look for a take-back program</h2><p>Ask a local pharmacy, clinic, or municipal waste service whether they accept unused or expired medicines. This is often the preferred option.</p></article><article class="panel guidance-card"><span class="guidance-number">02</span><h2>Keep medicines secure</h2><p>Keep items in their original packaging and out of reach of children and pets while arranging disposal. Do not share unused prescriptions.</p></article><article class="panel guidance-card"><span class="guidance-number">03</span><h2>Follow local instructions</h2><p>Rules differ by location and medicine type. Check the package leaflet or ask a pharmacist before placing anything in household waste or flushing it.</p></article></div>
+        <p class="medical-note">This general guidance is not a substitute for local regulations. For a medicine-specific disposal question, contact a pharmacist or local waste authority.</p>
+      </section>
+      <footer class="app-footer">MedTracker · Private by design · <span id="currentYear"></span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js" defer></script>
+</body>
+</html>
